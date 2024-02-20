@@ -6,16 +6,14 @@ from fk.forward_kinematics import ForwardKinematics
 
 from typing import Literal
 
-torch.manual_seed(0)
-
 class JacobianInverseTechnique:
     
-    def __init__(self, fk: ForwardKinematics, h: float = .005) -> None:
+    def __init__(self, fk: ForwardKinematics, h: float = .005, tolerance: float = 1e-3) -> None:
         self.fk = fk
         
         # Choose precision when calculating the jacobian. The smaller the better but slower convergence
         self.h = h
-        self.tolerance = 1e-3
+        self.tolerance = tolerance
 
     def _calculate_jacobian_matrix(self, angles: torch.Tensor, ee_pred: torch.Tensor, dimensions: Literal[2, 3] = 2) -> torch.Tensor:
         """Self explanatory"""
@@ -49,7 +47,7 @@ class JacobianInverseTechnique:
             # Calculate the error
             error = ee_true - ee_pred
             norm_error = torch.linalg.norm(error, dim=1)
-            mean_error = norm_error.mean().item()
+            mean_error = torch.mean(norm_error).item()
             print(f'{step=} | {mean_error=:.5f}')
 
             # If all predictions are really good, stop the loop (this might not be fully appropriate)
@@ -74,10 +72,15 @@ class JacobianInverseTechnique:
     
 
 if __name__ == '__main__':
-    fk = ForwardKinematics(n_links=6)
-    jit = JacobianInverseTechnique(fk)
+    
+    # Test run
     dims = 3
-    sample_pos = fk.run(dimensions=dims, n_samples=100_000)
+    n_links=6
+
+    torch.manual_seed(0)
+    fk = ForwardKinematics(n_links=n_links)
+    jit = JacobianInverseTechnique(fk)
+    sample_pos = fk.run(dimensions=dims, n_samples=10_000)
     angles = jit.run(sample_pos)
     pred_pos = fk.run(angles=angles, dimensions=dims)
     print(torch.mean(torch.linalg.norm(sample_pos - pred_pos, dim=1)))
