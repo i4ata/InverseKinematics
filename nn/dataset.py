@@ -5,20 +5,19 @@ import os
 
 class AnglesDataset:
     
-    def __init__(self, data_filename: str) -> None:
+    def __init__(self, data: torch.Tensor) -> None:
         """Initialize the dataset from a .pt file that contains a tensor"""
 
         # Shape: (n_samples, (x,y,[z])), i.e. (n_samples, 2 or 3)
-        self.dataset = TensorDataset(torch.load(data_filename))
+        self.dataset = TensorDataset(data)
 
     def split(self, train_size: float = .8) -> None:
         """Split the datasets into train and test"""
 
         self.train_dataset, self.test_dataset = random_split(self.dataset, lengths=(train_size, 1 - train_size))
 
-    def get_dataloaders(self, batch_size: int = 100, num_workers: int = os.cpu_count()) -> None:
+    def get_dataloaders(self, batch_size: int = 100) -> None:
         """Get a training and testing dataloader from the split dataset"""
         
-        pin = torch.cuda.is_available()
-        self.train_dataloader = DataLoader(self.train_dataset, batch_size=batch_size, pin_memory=pin, num_workers=num_workers)
-        self.test_dataloader = DataLoader(self.test_dataset, batch_size=batch_size, pin_memory=pin, num_workers=num_workers)
+        self.train_dataloader = DataLoader(self.train_dataset, batch_size=batch_size)
+        self.test_dataloader = DataLoader(self.test_dataset, batch_size=batch_size)

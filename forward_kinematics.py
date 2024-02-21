@@ -8,11 +8,12 @@ from typing import Optional, Literal
 
 class ForwardKinematics:
 
-    def __init__(self, n_links: Optional[int] = 6, links_lengths: Optional[ArrayLike] = None) -> None:
+    def __init__(self, n_links: Optional[int] = 6, links_lengths: Optional[ArrayLike] = None, device: str = 'cpu') -> None:
 
         # If the lengths are not given, initialize them with 1s
         # shape: (number_links)
-        self.lengths = links_lengths if links_lengths is not None else torch.ones(n_links)
+        self.device = device
+        self.lengths = links_lengths if links_lengths is not None else torch.ones(n_links, device=device)
 
     def _run_2d(self, n_samples: Optional[int] = None, angles: Optional[torch.Tensor] = None) -> torch.Tensor:
         """Do FK in 2D. If n_samples is passed, generate that many samples, if angles are passed compute the endeffector positions"""
@@ -21,10 +22,10 @@ class ForwardKinematics:
         
         # If the angles are not given, start off with random ones (uniformly distributed between -pi and pi)
         # shape: (batch_size, number_links)
-        angles = angles if angles is not None else (torch.rand(size=(n_samples, len(self.lengths))) * 2 - 1) * torch.pi
+        angles = angles if angles is not None else (torch.rand(size=(n_samples, len(self.lengths)), device=self.device) * 2 - 1) * torch.pi
 
         # Initialize the position and angle accumulators
-        x, y, theta = torch.zeros((3, len(angles)))
+        x, y, theta = torch.zeros(size=(3, len(angles)), device=self.device)
 
         for i in range(len(self.lengths)):
             
@@ -46,10 +47,10 @@ class ForwardKinematics:
         # The last dimension is 2 because each link is characterized by 2 angles: the angle it makes with the
         # positive z-axis (theta_1) and the angle its projection over the xy plane makes with the positive x-axis (theta_2)
         angles_shape = (len(angles) if angles is not None else n_samples, len(self.lengths), 2)
-        angles = angles.view(angles_shape) if angles is not None else (torch.rand(size=(angles_shape)) * 2 - 1) * torch.pi
+        angles = angles.view(angles_shape) if angles is not None else (torch.rand(size=angles_shape, device=self.device) * 2 - 1) * torch.pi
 
         # Initialize the position and angle accumulators
-        x, y, z, theta_1, theta_2 = torch.zeros((5, len(angles)))
+        x, y, z, theta_1, theta_2 = torch.zeros(size=(5, len(angles)), device=self.device)
         
         for i in range(len(self.lengths)):
             

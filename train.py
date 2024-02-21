@@ -6,12 +6,13 @@ from torch.utils.data import DataLoader
 from nn.model import KinematicsModel
 from nn.dataset import AnglesDataset
 from nn.early_stopper import EarlyStopper
-from fk.forward_kinematics import ForwardKinematics
 
 from typing import Optional, Literal
 from tqdm.auto import tqdm
 import os
 import argparse
+
+from forward_kinematics import ForwardKinematics
 
 seed = 0
 torch.manual_seed(seed=seed)
@@ -23,23 +24,22 @@ def parse_args():
 
     parser = argparse.ArgumentParser()
     
-    parser.add_argument('--dimensions',         type=int,   default=2,      help='Number of dimensions in the simulation')
-    parser.add_argument('--name',               type=str,   default='model',help='Name of the model')
+    parser.add_argument('--dimensions',         type=int,   default=2,          help='Number of dimensions in the simulation')
+    parser.add_argument('--name',               type=str,   default='model',    help='Name of the model')
 
-    parser.add_argument('--batch_size',         type=int,   default=100,    help='Mini batch size for training')
-    parser.add_argument('--learning_rate',      type=float, default=1e-3,   help='Optimizer learning rate')
-    parser.add_argument('--epochs',             type=int,   default=10,     help='Number of epochs to train for')
+    parser.add_argument('--batch_size',         type=int,   default=100,        help='Mini batch size for training')
+    parser.add_argument('--learning_rate',      type=float, default=1e-3,       help='Optimizer learning rate')
+    parser.add_argument('--epochs',             type=int,   default=50,         help='Number of epochs to train for')
 
-    parser.add_argument('--n_hidden_layers',    type=int,   default=3,      help='Number of hidden layers of the model')
-    parser.add_argument('--hidden_size',        type=int,   default=32,     help='Size of the hidden layers')
+    parser.add_argument('--n_hidden_layers',    type=int,   default=3,          help='Number of hidden layers of the model')
+    parser.add_argument('--hidden_size',        type=int,   default=32,         help='Size of the hidden layers')
 
-    parser.add_argument('--patience',           type=int,   default=3,      help='Early stopper patience')
+    parser.add_argument('--patience',           type=int,   default=5,          help='Early stopper patience')
 
-    parser.add_argument('--dataset_dir',        type=str,   default='data', help='Location of the generated dataset')
-    parser.add_argument('--n_samples',          type=int,   default=1e5,    help='Dataset size')
-    parser.add_argument('--n_links',            type=int,   default=6,      help='Number of links of the robotic arm')
-    parser.add_argument('--train_size',         type=float, default=.9,     help='Proportion of data used for training')
-    parser.add_argument('--num_workers',        type=int,   default=3,      help='Number of CPU cores to use for data loading')
+    parser.add_argument('--dataset_dir',        type=str,   default='data',     help='Location of the generated dataset')
+    parser.add_argument('--n_samples',          type=int,   default=int(1e6),   help='Dataset size')
+    parser.add_argument('--n_links',            type=int,   default=6,          help='Number of links of the robotic arm')
+    parser.add_argument('--train_size',         type=float, default=.9,         help='Proportion of data used for training')
 
     return parser.parse_args()
 
@@ -118,19 +118,21 @@ if __name__ == '__main__':
                          n_hidden_layers=args.n_links, 
                          hidden_size=args.hidden_size, 
                          dimensions=args.dimensions).to(DEVICE)
-    fk = ForwardKinematics(n_links=args.n_links)
+    fk = ForwardKinematics(n_links=args.n_links, device=DEVICE)
     loss = nn.MSELoss()
     early_stopper = EarlyStopper(patience=args.patience)
     optimizer = Adam(km.parameters(), lr=args.learning_rate)
 
     if not os.path.exists(args.dataset_dir + '.pt'):
         data = fk.run(n_samples=args.n_samples, dimensions=args.dimensions)
-        torch.save(data, args.dataset_dir + '.pt')
+        # torch.save(data, args.dataset_dir + '.pt')
         print(f'Generated dataset with {args.n_samples} samples')
+    else:
+        data = torch.load(args.dataset + '.pt')
 
-    dataset = AnglesDataset(data_filename=args.dataset_dir + '.pt')
+    dataset = AnglesDataset(data=data)
     dataset.split(train_size=args.train_size)
-    dataset.get_dataloaders(batch_size=args.batch_size, num_workers=args.num_workers)
+    dataset.get_dataloaders(batch_size=args.batch_size)
 
     print('Training begins')
     train(model=km, 
@@ -142,5 +144,5 @@ if __name__ == '__main__':
           fk=fk,
           dimensions=args.dimensions,
           epochs=args.epochs,
-          save_dir=args.name)
+          save_dir='models/' + args.name + '.pt')
     

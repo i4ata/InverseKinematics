@@ -2,7 +2,7 @@
 
 import torch
 
-from fk.forward_kinematics import ForwardKinematics
+from forward_kinematics import ForwardKinematics
 
 from typing import Literal
 

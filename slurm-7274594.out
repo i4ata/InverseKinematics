@@ -1,0 +1,83 @@
+Generated dataset with 1000000 samples
+Training begins
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:31<25:47, 31.58s/it]  4%|▍         | 2/50 [00:57<22:43, 28.42s/it]  6%|▌         | 3/50 [01:24<21:28, 27.42s/it]  8%|▊         | 4/50 [01:50<20:39, 26.96s/it] 10%|█         | 5/50 [02:16<20:01, 26.70s/it] 12%|█▏        | 6/50 [02:42<19:27, 26.54s/it] 14%|█▍        | 7/50 [03:08<18:56, 26.44s/it] 16%|█▌        | 8/50 [03:35<18:27, 26.38s/it] 18%|█▊        | 9/50 [04:01<17:59, 26.32s/it] 20%|██        | 10/50 [04:27<17:31, 26.28s/it] 22%|██▏       | 11/50 [04:53<17:04, 26.26s/it] 24%|██▍       | 12/50 [05:19<16:36, 26.22s/it] 26%|██▌       | 13/50 [05:45<16:07, 26.16s/it] 28%|██▊       | 14/50 [06:11<15:38, 26.08s/it] 30%|███       | 15/50 [06:37<15:10, 26.03s/it] 30%|███       | 15/50 [07:03<16:28, 28.25s/it]
+epoch=0 | train_loss=0.2919 | test_loss=0.0323
+epoch=1 | train_loss=0.0127 | test_loss=0.0186
+epoch=2 | train_loss=0.0068 | test_loss=0.0071
+epoch=3 | train_loss=0.0054 | test_loss=0.0034
+epoch=4 | train_loss=0.0039 | test_loss=0.0061
+epoch=5 | train_loss=0.0042 | test_loss=0.0108
+epoch=6 | train_loss=0.0048 | test_loss=0.0084
+epoch=7 | train_loss=0.0030 | test_loss=0.0023
+epoch=8 | train_loss=0.0047 | test_loss=0.0040
+epoch=9 | train_loss=0.0028 | test_loss=0.0045
+epoch=10 | train_loss=0.0024 | test_loss=0.0017
+epoch=11 | train_loss=0.0023 | test_loss=0.0173
+epoch=12 | train_loss=0.0034 | test_loss=0.0042
+epoch=13 | train_loss=0.0035 | test_loss=0.0033
+epoch=14 | train_loss=0.0087 | test_loss=0.0473
+Training stopped early due to risk of overfitting.
+Generated dataset with 1000000 samples
+Training begins
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:40<32:43, 40.07s/it]  4%|▍         | 2/50 [01:18<31:18, 39.13s/it]  6%|▌         | 3/50 [01:57<30:38, 39.12s/it]  8%|▊         | 4/50 [02:36<29:57, 39.07s/it] 10%|█         | 5/50 [03:15<29:07, 38.82s/it] 12%|█▏        | 6/50 [03:53<28:21, 38.68s/it] 14%|█▍        | 7/50 [04:32<27:42, 38.65s/it] 16%|█▌        | 8/50 [05:10<27:04, 38.68s/it] 18%|█▊        | 9/50 [05:49<26:27, 38.71s/it] 20%|██        | 10/50 [06:27<25:45, 38.63s/it] 22%|██▏       | 11/50 [07:06<25:05, 38.59s/it] 24%|██▍       | 12/50 [07:44<24:25, 38.55s/it] 26%|██▌       | 13/50 [08:23<23:45, 38.53s/it] 28%|██▊       | 14/50 [09:01<23:06, 38.52s/it] 30%|███       | 15/50 [09:40<22:27, 38.50s/it] 32%|███▏      | 16/50 [10:18<21:48, 38.49s/it] 34%|███▍      | 17/50 [10:57<21:09, 38.48s/it] 36%|███▌      | 18/50 [11:35<20:31, 38.48s/it] 38%|███▊      | 19/50 [12:14<19:51, 38.43s/it] 40%|████      | 20/50 [12:52<19:10, 38.35s/it] 40%|████      | 20/50 [13:30<20:15, 40.52s/it]
+epoch=0 | train_loss=0.0461 | test_loss=0.0044
+epoch=1 | train_loss=0.0012 | test_loss=0.0044
+epoch=2 | train_loss=0.0008 | test_loss=0.0044
+epoch=3 | train_loss=0.0006 | test_loss=0.0078
+epoch=4 | train_loss=0.0005 | test_loss=0.0058
+epoch=5 | train_loss=0.0005 | test_loss=0.0012
+epoch=6 | train_loss=0.0004 | test_loss=0.0033
+epoch=7 | train_loss=0.0004 | test_loss=0.0013
+epoch=8 | train_loss=0.0004 | test_loss=0.0022
+epoch=9 | train_loss=0.0003 | test_loss=0.0010
+epoch=10 | train_loss=0.0003 | test_loss=0.0012
+epoch=11 | train_loss=0.0003 | test_loss=0.0022
+epoch=12 | train_loss=0.0003 | test_loss=0.0009
+epoch=13 | train_loss=0.0003 | test_loss=0.0010
+epoch=14 | train_loss=0.0003 | test_loss=0.0014
+epoch=15 | train_loss=0.0003 | test_loss=0.0009
+epoch=16 | train_loss=0.0003 | test_loss=0.0025
+epoch=17 | train_loss=0.0003 | test_loss=0.0016
+epoch=18 | train_loss=0.0003 | test_loss=0.0039
+epoch=19 | train_loss=0.0002 | test_loss=0.0020
+Training stopped early due to risk of overfitting.
+
+###############################################################################
+Hábrók Cluster
+Job 7274594 for user s4362675
+Finished at: Wed Feb 21 08:41:21 CET 2024
+
+Job details:
+============
+
+Job ID              : 7274594
+Name                : inv_kinematics
+User                : s4362675
+Partition           : gpushort
+Nodes               : a100gpu3
+Number of Nodes     : 1
+Cores               : 8
+Number of Tasks     : 1
+State               : COMPLETED
+Submit              : 2024-02-21T08:20:29
+Start               : 2024-02-21T08:20:30
+End                 : 2024-02-21T08:41:21
+Reserved walltime   : 00:59:00
+Used walltime       : 00:20:51
+Used CPU time       : 00:20:37 (efficiency: 12.36%)
+% User (Computation): 99.24%
+% System (I/O)      :  0.76%
+Mem reserved        : 8000M
+Max Mem (Node/step) : 530.33M (a100gpu3, per node)
+Full Max Mem usage  : 530.33M
+Total Disk Read     : 60.64M
+Total Disk Write    : 432.27K
+
+Acknowledgements:
+=================
+
+Please see this page for information about acknowledging Hábrók in your publications:
+
+https://wiki.hpc.rug.nl/habrok/introduction/scientific_output
+
+################################################################################
