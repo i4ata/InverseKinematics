@@ -1,8 +1,6 @@
 from torch.utils.data import TensorDataset, DataLoader, random_split
 import torch
 
-import os
-
 class AnglesDataset:
     
     def __init__(self, data: torch.Tensor) -> None:

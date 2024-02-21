@@ -104,7 +104,7 @@ def train(model: KinematicsModel,
                 print('Training stopped early due to risk of overfitting.')
                 break
             if early_stopper.save_model:
-                torch.save(model.state_dict(), save_dir)
+                torch.save(model, save_dir)
 
         print(f'{epoch=} | {train_loss=:.4f} | {test_loss=:.4f}')
     else:
