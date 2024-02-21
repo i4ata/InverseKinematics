@@ -74,7 +74,13 @@ class ForwardKinematics:
         func = self._run_2d if dimensions == 2 else self._run_3d
         return func(n_samples=n_samples, angles=angles)
 
-    def plot_2d(self, angles: Optional[ArrayLike] = None) -> None:
+    def plot(self, dimensions: Literal[2, 3] = 2, angles: Optional[ArrayLike] = None, filename: Optional[str] = None) -> None:
+        func = self._plot_2d if dimensions == 2 else self._plot_3d
+        func(angles=angles)
+        if filename is not None:
+            plt.savefig(filename)
+
+    def _plot_2d(self, angles: Optional[ArrayLike] = None) -> None:
         """Plot a single example in 2D"""
 
         angles = angles if angles is not None else np.random.uniform(low=-math.pi, high=math.pi, size=len(self.lengths))
@@ -99,14 +105,15 @@ class ForwardKinematics:
         plt.legend()
         plt.xlabel('x')
         plt.ylabel('y')
-        plt.title('Example of forward kinematics in 2D')
-        plt.savefig('2d_fk.pdf')
-        plt.show()
+        # plt.title('Example of forward kinematics in 2D')
+        # plt.savefig('2d_fk.pdf')
+        # plt.show()
 
-    def plot_3d(self, angles: Optional[ArrayLike] = None) -> None:
+    def _plot_3d(self, angles: Optional[ArrayLike] = None) -> None:
         """Plot a single example in 3D"""
 
-        angles = angles if angles is not None else np.random.uniform(low=-math.pi, high=math.pi, size=(len(self.lengths), 2))
+        angles_shape = (len(self.lengths), 2)
+        angles = np.reshape(angles, angles_shape) if angles is not None else np.random.uniform(low=-math.pi, high=math.pi, size=angles_shape)
         x, y, z, theta_1, theta_2 = 0., 0., 0., 0., 0
 
         fig = plt.figure()
@@ -134,11 +141,12 @@ class ForwardKinematics:
         ax.set_xlabel('x')
         ax.set_ylabel('y')
         ax.set_zlabel('z')
-        ax.set_title('Example of forward kinematics in 3D')
-        plt.savefig('3d_fk.pdf')
-        plt.show()
+        # ax.set_title('Example of forward kinematics in 3D')
+        # plt.savefig('3d_fk.pdf')
+        # plt.show()
 
 if __name__ == '__main__':
     fk = ForwardKinematics(n_links=6)
-    fk.plot_3d()
+    fk.plot()
+    plt.show()
     

@@ -6,6 +6,8 @@ from forward_kinematics import ForwardKinematics
 
 from typing import Literal
 
+DEBUG = False
+
 class JacobianInverseTechnique:
     
     def __init__(self, fk: ForwardKinematics, h: float = .005, tolerance: float = 1e-3) -> None:
@@ -48,12 +50,12 @@ class JacobianInverseTechnique:
             error = ee_true - ee_pred
             norm_error = torch.linalg.norm(error, dim=1)
             mean_error = torch.mean(norm_error).item()
-            print(f'{step=} | {mean_error=:.5f}')
+            if DEBUG: print(f'{step=} | {mean_error=:.5f}')
 
             # If all predictions are really good, stop the loop (this might not be fully appropriate)
             not_converged_mask = norm_error > self.tolerance
             if torch.all(torch.logical_not(not_converged_mask)):
-                print('Solver converged early.')
+                if DEBUG: print('Solver converged early.')
                 break
 
             # calculate the jacobian matrix
@@ -76,12 +78,14 @@ if __name__ == '__main__':
     # Test run
     dims = 3
     n_links=6
+    DEBUG = True
 
     torch.manual_seed(0)
     fk = ForwardKinematics(n_links=n_links)
     jit = JacobianInverseTechnique(fk)
-    sample_pos = fk.run(dimensions=dims, n_samples=10_000)
+    sample_pos = fk.run(dimensions=dims, n_samples=10)
     angles = jit.run(sample_pos)
+    print(angles.shape, sample_pos.shape)
     pred_pos = fk.run(angles=angles, dimensions=dims)
     print(torch.mean(torch.linalg.norm(sample_pos - pred_pos, dim=1)))
     
