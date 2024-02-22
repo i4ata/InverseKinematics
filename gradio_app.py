@@ -1,6 +1,5 @@
 import gradio as gr
 import argparse
-from typing import Literal
 
 import torch
 import matplotlib.pyplot as plt
@@ -35,5 +34,9 @@ if __name__ == '__main__':
             return plt
 
     inputs = [gr.Number(label=coordinate) for dimension, coordinate in zip(range(args.dimensions), 'xyz')]
-    demo = gr.Interface(fn=predict, inputs=inputs, outputs=gr.Plot())
+    demo = gr.Interface(fn=predict, 
+                        inputs=inputs, 
+                        outputs=gr.Plot(), 
+                        title=f'Inverse Kinematics Using {args.model}', 
+                        description=f'Inverse kinematics solver in {args.dimensions}-dimensional simulations')
     demo.launch()
